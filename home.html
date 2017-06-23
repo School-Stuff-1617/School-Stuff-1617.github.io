@@ -1,0 +1,194 @@
+<html>
+    <head>
+        <script src="jquery-3.2.1.min.js"></script>
+        <script src="script.js"></script>
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+            @import url('https://fonts.googleapis.com/css?family=Oswald');
+
+            body {
+                background-color:darkviolet;
+                margin: 0;
+                font-family: sans-serif;
+            }
+            #header {
+                display: inline-block;
+                height: 70px;
+                width: 100%;
+                /*background-color: aqua;*/
+                background-color:darkviolet;
+                line-height: 70px;
+                position: fixed;
+            }
+            #hright {
+                display: inline-block;
+                margin-left: 20px;
+                float: right;
+                margin-right: 10%;
+                white-space: nowrap;
+            }
+            #hleft {
+                display: inline-block;
+                margin-left: 10%;
+            }
+            .hlink {
+                margin-left: 20px;
+                color: white;
+                white-space: nowrap;
+            }
+            #hlogo {
+                color: white;
+                white-space: nowrap;
+            }
+            a {
+                text-decoration: none;
+                color: black;
+            }
+            a:visited {
+                color: white;
+            }
+            #bodypanel {
+                text-align: center;
+                /*margin-top: 70px;*/
+                padding-top: 70px;
+            }
+            .postcontainer {
+                background-color: whitesmoke;
+                padding: 30px;
+                min-height: 100px;
+                width: 80%;
+                max-width: 800px;
+                margin: 0 auto;
+                margin-bottom: 30px;
+                border-radius: 15px;
+                text-align: left;
+            }
+            .posttitle a{
+                font-weight: 500;
+                font-size: 1.5em;
+                font-family: 'Oswald', sans-serif;
+                color:darkslategrey;
+            }
+            .postauthor a{
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 500;
+                color: cornflowerblue;
+            }
+            .postcontent a{
+                padding-top: 10px;
+                font-family: 'Open Sans', sans-serif;
+            }
+            .postcontent {
+                padding-top: 10px;
+            }
+            #footer{
+                text-align: center;
+            }
+            #viewmore{
+                text-align: center;
+                margin-bottom: 5%;
+                color: white;
+                display: inline-block;
+            }
+            #viewmore:hover{
+                cursor: pointer;
+            }
+        </style>
+        <script>
+            var root = 'https://jsonplaceholder.typicode.com';
+            var allPosts = [];
+            var posts_cnt = 0;
+            var numViewPost = 10;
+
+            function showPost(obj) {
+                var new_post_container = document.createElement("div");
+                new_post_container.className += "postcontainer";
+                var new_post_title = document.createElement("div");
+                new_post_title.className += "posttitle";
+                var new_post_author = document.createElement("div");
+                new_post_author.className += "postauthor";
+                var new_post_content = document.createElement("div");
+                new_post_content.className += "postcontent";
+
+                var a_title = document.createElement("a");
+                var a_author = document.createElement("a");
+                var a_post = document.createElement("a");
+
+                var authorName;
+                var authorId;
+                $.ajax({
+                    url: root + '/users/' + obj.userId,
+                    method: 'GET'
+                }).then(function(data) {
+                    authorName = data.name;
+                    a_author.textContent = data.username;
+                });
+
+                a_title.textContent = obj.title;
+                a_post.textContent = obj.body;
+                a_author.href = "user.html?id=" + obj.userId;
+                
+                new_post_title.appendChild(a_title);
+                new_post_author.appendChild(a_author);
+                new_post_content.appendChild(a_post);
+
+                new_post_container.appendChild(new_post_title);
+                new_post_container.appendChild(new_post_author);
+                new_post_container.appendChild(new_post_content);
+
+                $("#bodypanel").append(new_post_container);
+                $(new_post_container).show(500);
+            }
+
+            function getPosts(){
+                $.ajax({
+                    url: root + '/posts/',
+                    method: 'GET'
+                }).then(function(data) {
+                    for(i = data.length - posts_cnt - 1; i > data.length - posts_cnt - numViewPost - 1 && i >= 0; i--) {
+                        showPost(data[i]);
+                        console.log(data[i].id)
+                    }
+                    posts_cnt = posts_cnt + numViewPost;
+                    if(posts_cnt >= data.length){
+                        $("#viewmore").hide();
+                    }
+                });
+            }
+
+            $(document).ready(function(){
+                //console.log("console.log");
+                getPosts();
+                $("#viewmore").click(function(e){
+                    e.preventDefault();
+                    getPosts();
+                });
+            });
+
+        </script>
+        <title></title>
+    </head>
+    <body>
+        <div id="header">
+            <div id="hleft">
+                <a id="hlogo" href="home.html">OINKLOGO</a>
+            </div>
+            <div id="hright">
+                <a class="hlink" href="home.html">Home</a> 
+                <a class="hlink" href="user.html">Albums</a>
+            </div>
+        </div>
+
+        <div id="bodypanel">
+
+        </div>
+
+        <div id="footer">
+            <div id="viewmore">
+                View More...
+            </div>
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,363 @@
+<html>
+
+<head>
+    <script src="jquery-3.2.1.min.js"></script>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+        @import url('https://fonts.googleapis.com/css?family=Oswald');
+        body {
+            background-color: darkviolet;
+            margin: 0;
+            font-family: sans-serif;
+        }
+        
+        #header {
+            display: inline-block;
+            height: 70px;
+            width: 100%;
+            /*background-color: aqua;*/
+            background-color: darkviolet;
+            line-height: 70px;
+            position: fixed;
+        }
+        
+        #hright {
+            display: inline-block;
+            margin-left: 20px;
+            float: right;
+            margin-right: 10%;
+            white-space: nowrap;
+        }
+        
+        #hleft {
+            display: inline-block;
+            margin-left: 10%;
+        }
+        
+        .hlink {
+            margin-left: 20px;
+            color: white;
+            white-space: nowrap;
+        }
+        
+        #hlogo {
+            color: white;
+            white-space: nowrap;
+        }
+        
+        a {
+            text-decoration: none;
+            color: black;
+        }
+        
+        a:visited {
+            color: white;
+        }
+        
+        #bodypanel {
+            text-align: center;
+            /*margin-top: 70px;*/
+            padding-top: 70px;
+        }
+        
+        .tab_photo {
+            display:inline-block;
+            background-color: whitesmoke;
+            padding: 15px;
+            height: 150px;
+            width: 150px;
+            margin: 15px;
+            border-radius: 15px;
+        }
+
+        .phototitle a {
+            position: relative;
+            font-size: 12;
+            font-family: 'Oswald', sans-serif;
+            color: darkslategrey;
+        }
+        
+        .photoalbum a {
+            font-size: 10;
+            font-family: 'Open Sans', sans-serif;
+            color: cornflowerblue;
+        }
+        
+        #footer {
+            text-align: center;
+        }
+        
+        #viewmore {
+            text-align: center;
+            margin-bottom: 5%;
+            color: white;
+            display: inline-block;
+        }
+        
+        #viewmore:hover {
+            cursor: pointer;
+        }
+        
+        /* CSS for tabs */
+        ul, li {
+            list-style: none;
+        }
+        
+        .tab a {
+            color: #000;
+        }
+        
+        .tab {
+            border: 0px solid darkviolet;
+            border-left: none;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        
+        .tab li {
+            float: center;
+            width: 20%;
+            border-left: 0px solid #ddd;
+            text-align: center;
+            box-sizing: border-box;
+            display: inline-block;
+            padding-top: 80px;
+            padding-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .tab li.on {
+            background-color: #eee;
+            color: #f00;
+        }
+        
+        .tab_con {
+            clear: both;
+            margin-top: 5px;
+            border: 0px solid #ddd;
+        }
+        
+        #tab-album , #tab-photos  {
+            display: none;
+            height: 1000px;
+            background: #fff;
+/*
+            line-height: 100px;
+            text-align: center;
+*/
+        }
+        
+
+    </style>
+    <script>
+        var root = 'https://jsonplaceholder.typicode.com';
+        var allphotos = [];
+        var photos_cnt = 0;
+        
+
+        function getPhotos(obj) {
+            var new_tab_photo = document.createElement("div");
+            new_tab_photo.className += "tab_photo";
+            var new_photo_container = document.createElement("div");
+            new_photo_container.className += "photocontainer";
+            
+            
+            /*  The user may view the original photo (not thumbnail) and more information about
+            the photo upon clicking it. These will include knowing the title of the photo, who uploaded it,
+            and which album it belongs to (by title, not id).
+            var new_photo_info = document.createElement("div");
+            new_photo_info.className += "photoinfo";
+            var new_photo_album = document.createElement("div");
+            new_photo_album.className += "photoalbum";
+            var new_photo_title = document.createElement("div");
+            new_photo_title.className += "phototitle";*/
+            var new_thumb = document.createElement("img");
+            new_thumb.className += "thumbnail";
+            new_thumb.setAttribute("src", obj.thumbnailUrl);
+            
+            /*var a_album = document.createElement("a");
+            var a_title = document.createElement("a");*/
+            var a_thumb = document.createElement("a");
+            
+            var albumNum;
+            $.ajax({
+                url: root + '/albums/' + obj.albumId
+                , method: 'GET'
+            }).then(function (data) {
+                console.log(data.id);
+                albumNum = data.id;
+                a_album.textContent = data.title;
+            });
+//            a_title.textContent = obj.title;
+            a_thumb.textContent = new_thumb;
+//            a_album.textContent = obj.albumId;
+//            new_photo_title.appendChild(a_title);
+//            new_photo_album.appendChild(a_album);
+            new_thumb.appendChild(a_thumb);
+            new_tab_photo.appendChild(new_photo_container);
+            new_photo_container.appendChild(new_thumb);
+//            new_photo_container.appendChild(new_photo_info);
+//            new_photo_info.appendChild(new_photo_title);
+//            new_photo_info.appendChild(new_photo_album);
+            
+            $("#tab_con").append(new_tab_photo);
+            
+            $(new_tab_photo).show(500);
+        }
+        $(document).ready(function () {
+            console.log("console.log");
+            $.ajax({
+                url: root + '/photos/'
+                , method: 'GET'
+            }).then(function (data) {
+                for (i = data.length - photos_cnt - 1; i > data.length - photos_cnt - 11; i--) {
+                    getPhotos(data[i]);
+                    console.log(data[i].id)
+                }
+                photos_cnt = photos_cnt + 10;
+            });
+            $("#viewmore").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: root + '/photos/'
+                    , method: 'GET'
+                }).then(function (data) {
+                    for (i = data.length - photos_cnt - 1; i > data.length - photos_cnt - 11; i--) {
+                        getPhotos(data[i]);
+                        console.log(data[i].id)
+                    }
+                    photos_cnt = photos_cnt + 10;
+                    if (photos_cnt == data.length) {
+                        $("#viewmore").hide();
+                    }
+                });
+            });
+        });
+        
+        function getAlbums(obj) {
+            var new_tab_album = document.createElement("div");
+            new_tab_photo.className += "tab_album";
+            var new_album_container = document.createElement("div");
+            new_album_container.className += "photocontainer";
+            var new_album_info = document.createElement("div");
+            new_album_info.className += "photoinfo";
+            var new_album_title = document.createElement("div");
+            new_photo_album.className += "photoalbum";
+            var new_album_photo = document.createElement("div");
+            new_photo_title.className += "phototitle";
+            var new_thumb = document.createElement("img");
+            new_thumb.className += "thumbnail";
+            new_thumb.setAttribute("src", obj.thumbnailUrl);
+
+            var a_album = document.createElement("a");
+            var a_title = document.createElement("a");
+            var a_thumb = document.createElement("a");
+
+            var albumNum;
+            $.ajax({
+                url: root + '/albums/' + obj.albumId
+                , method: 'GET'
+            }).then(function (data) {
+                console.log(data.id);
+                albumNum = data.id;
+                a_album.textContent = data.title;
+            });
+            a_title.textContent = obj.title;
+            a_thumb.textContent = new_thumb;
+            a_album.textContent = obj.albumId;
+            new_photo_title.appendChild(a_title);
+            new_photo_album.appendChild(a_album);
+            new_thumb.appendChild(a_thumb);
+            new_tab_photo.appendChild(new_photo_container);
+            new_photo_container.appendChild(new_thumb);
+            new_photo_container.appendChild(new_photo_info);
+            new_photo_info.appendChild(new_photo_title);
+            new_photo_info.appendChild(new_photo_album);
+
+            $("#tab_con").append(new_tab_photo);
+
+            $(new_tab_photo).show(500);
+        }
+        $(document).ready(function () {
+            console.log("console.log");
+            $.ajax({
+                url: root + '/photos/'
+                , method: 'GET'
+            }).then(function (data) {
+                for (i = data.length - photos_cnt - 1; i > data.length - photos_cnt - 11; i--) {
+                    getPhotos(data[i]);
+                    console.log(data[i].id)
+                }
+                photos_cnt = photos_cnt + 10;
+            });
+            $("#viewmore").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: root + '/photos/'
+                    , method: 'GET'
+                }).then(function (data) {
+                    for (i = data.length - photos_cnt - 1; i > data.length - photos_cnt - 11; i--) {
+                        getPhotos(data[i]);
+                        console.log(data[i].id)
+                    }
+                    photos_cnt = photos_cnt + 10;
+                    if (photos_cnt == data.length) {
+                        $("#viewmore").hide();
+                    }
+                });
+            });
+        });
+//         script for tabs 
+        $(function () {
+            tab('#tab', 0);
+        });
+
+        function tab(e, num) {
+            var num = num || 0;
+            var menu = $(e).children();
+            var con = $(e + '_con').children();
+            var select = $(menu).eq(num);
+            var j = num;
+            select.addClass('on');
+            con.eq(num).show();
+            menu.click(function () {
+                if (select !== null) {
+                    select.removeClass("on");
+                    con.eq(j).hide();
+                }
+                select = $(this);
+                j = $(this).index();
+                select.addClass('on');
+                con.eq(j).show();
+            });
+        }
+        
+    </script>
+    <title></title>
+</head>
+
+<body>
+    <div id="header">
+        <div id="hleft"> <a id="hlogo" href="home.html">OINKLOGO</a> </div>
+        <div id="hright"> <a class="hlink" href="home.html">Home</a> <a class="hlink" href="photos.html">Albums</a> <a class="hlink" href="home.html">Users</a> </div>
+    </div>
+    <!--Tabs-->
+    <ul class="tab" id="tab">
+        <li><a href="#tab-album">Albums</a></li>
+        <li><a href="#tab-photos">Photos</a></li>
+    </ul>
+    <div class="tab_con" id="tab_con">
+       <div id="tab-album">Albums</div>
+<!--        <div id="tab-photos">
+            <img src="http://placehold.it/150/92c952" border="0" alt="aaa">
+            <img src="http://placehold.it/150/771796" border="0" alt="aaa">
+
+        </div>-->
+    </div>
+    
+    <div id="footer">
+        <div id="viewmore"> View More... </div>
+    </div>
+</body>
+
+</html>
