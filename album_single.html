@@ -86,7 +86,7 @@
                 cursor: pointer;
             }
 
-            .tab li.ph {
+            .tab li.al {
                 background-color: #eee;
                 color: #f00;
             }
@@ -106,13 +106,16 @@
                 background: #fff;
             }
 
-
+            #album_info_container{
+                text-align: center;
+                margin: 0px;
+            }
         </style>
         <script>
             var root = 'https://jsonplaceholder.typicode.com';
             var allphotos = [];
             var photos_cnt = 0;
-            var numViewPhoto = 15;
+            var numViewPhoto = 9;
 
             function showPhoto(photoObj) {
                 var a_photo = document.createElement("a");
@@ -188,8 +191,38 @@
             }
 
             function getPhotos(){
+                var id = window.location.search.split("=");
+
+                //create album title
+                var album_title = document.createElement("div");
+                album_title.className += "album_title";
+
+                var album_user = document.createElement("div");
+                album_user.className += "album_user";
+
+                var userid;
                 $.ajax({
-                    url: root + '/photos/'
+                    url: root + '/albums?id=' + id[1]
+                    , method: 'GET'
+                }).then(function (album) {
+                    album_title.textContent = album[0].title;
+                    //userid = album[0].userId;
+                    $.ajax({
+                        url: root + '/users?id=' + album[0].userId,
+                        method: 'GET'
+                    }).then(function(data) {
+                        console.log(data);
+                        //console.log(userid);
+                        album_user.textContent = data[0].name;
+                    });
+                });
+
+
+                $("#album_info_container").append(album_title);
+                $("#album_info_container").append(album_user);
+
+                $.ajax({
+                    url: root + '/photos?albumId=' + id[1]
                     , method: 'GET'
                 }).then(function (photos) {
                     for (i = photos.length - photos_cnt - 1; i > photos.length - photos_cnt - numViewPhoto - 1 && i >= 0; i--) {
@@ -233,6 +266,7 @@
                 <li class="al"><a href="albums.html">Albums</a></li>
                 <li class="ph"><a href="photos.html">Photos</a></li>
             </ul>
+            <div id="album_info_container"></div>
             <div class="tab_con" id="tab_con">
             </div>
         </div>

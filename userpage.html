@@ -8,6 +8,7 @@
             var root = 'https://jsonplaceholder.typicode.com';
             var allPosts = [];
             var posts_cnt = 0;
+            var numViewPost = 10;
 
             function getUser(obj) {
                 console.log(obj);
@@ -74,22 +75,25 @@
                 var id = window.location.search.split("=");
 
                 $.ajax({
-                    url: root + '/users/' + id[1],
+                    url: root + '/users?id=' + id[1],
                     method: 'GET'
                 }).then(function(data) {
-                    getUser(data);
+                    getUser(data[0]);
                     console.log(data);
                 });
-
+                console.log(id[1]);
                 $.ajax({
                     url: root + '/posts?userId=' +  + id[1],
                     method: 'GET'
-                }).then(function(data) {
-                    for(i = data.length - posts_cnt - 1; i > data.length - posts_cnt - 11; i--) {
-                        getPost(data[i]);
-                        console.log(data[i].id)
+                }).then(function(posts) {
+                    for(i = posts.length - posts_cnt - 1; i > posts.length - posts_cnt - numViewPost - 1 && i >= 0; i--) {
+                        getPost(posts[i]);
+                        console.log(posts[i].id)
                     }
-                    posts_cnt = posts_cnt + 10;
+                    posts_cnt = posts_cnt + numViewPost;
+                    if(posts_cnt >= posts.length){
+                        $("#viewmore").hide();
+                    }
                 });
 
                 /*

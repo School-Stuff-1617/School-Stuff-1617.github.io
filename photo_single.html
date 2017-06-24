@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="jquery-3.2.1.min.js"></script>
+        <link rel = "stylesheet" href = "stylesheet.css">
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css?family=Open+Sans');
+            @import url('https://fonts.googleapis.com/css?family=Oswald');
+                        /* CSS for tabs */
+
+            ul, li {
+                list-style: none;
+            }
+
+            .tab a {
+                color: #000;
+            }
+
+            .tab {
+                border: 0px solid darkviolet;
+                border-left: none;
+                background-color: #fff;
+                overflow: hidden;
+                text-align: left;
+                margin: 0px;
+            }
+
+            .tab li {
+                float: center;
+                width: 20%;
+                border-left: 0px solid #ddd;
+                text-align: center;
+                box-sizing: border-box;
+                display: inline-block;
+                padding-top: 15px;
+                padding-bottom: 15px;
+                cursor: pointer;
+            }
+
+            .tab li.ph {
+                background-color: #eee;
+                color: #f00;
+            }
+
+            .tab_con {
+                /*clear: both;*/
+                margin: 0 auto;
+                margin-top: 5px;
+                border: 0px solid #ddd;
+                width: 80%;
+                text-align: center;
+            }
+
+            #tab-album , #tab-photos  {
+                display: none;
+                height: 1000px;
+                background: #fff;
+            }
+        </style>
+        <script>
+            var root = 'https://jsonplaceholder.typicode.com';
+
+            $(document).ready(function(){
+                var id = window.location.search.split("=");
+
+                $.ajax({
+                    url: root + '/photos?id=' + id[1],
+                    method: 'GET'
+                }).then(function(data) {
+                    console.log(data);
+                });
+            });
+
+        </script>
+    </head>
+    <body>
+        <div id="header">
+            <div id="hleft">
+                <a id="hlogo" href="index.html">OINKLOGO</a>
+            </div>
+            <div id="hright">
+                <a class="hlink" href="index.html">Home</a> 
+                <a class="hlink" href="albums.html">Albums</a>
+            </div>
+        </div>
+        <!--Tabs-->
+
+
+        <div id="bodypanel">
+            <ul class="tab" id="tab">
+                <li class="al"><a href="albums.html">Albums</a></li>
+                <li class="ph"><a href="photos.html">Photos</a></li>
+            </ul>
+            <div class="tab_con" id="tab_con">
+            </div>
+        </div>
+        <!--
+        <div id="footer">
+            <div id="viewmore"> View More... </div>
+        </div>
+-->
+    </body>
+</html>
