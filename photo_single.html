@@ -71,7 +71,10 @@
                     url: root + '/photos?id=' + id[1],
                     method: 'GET'
                 }).then(function(data) {
-                    console.log(data);
+                    console.log(data[0]);
+                    /////////////////
+                    //data[0] is the photo object that is needed to show
+                    
                 });
                 $("#return_prev").click(function(e){
                     e.preventDefault();
