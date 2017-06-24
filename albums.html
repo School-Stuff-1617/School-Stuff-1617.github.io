@@ -12,8 +12,6 @@
                 display:inline-block;
                 background-color: whitesmoke;
                 padding: 15px;
-                height: 150px;
-                width: 150px;
                 margin: 15px;
             }
 
@@ -104,6 +102,12 @@
                 height: 1000px;
                 background: #fff;
             }
+            
+            .num_photo{
+                padding-top: 8px;
+                font-size: 12;
+                color: darkslategrey;
+            }
 
         </style>
         <script>
@@ -147,6 +151,10 @@
                     var new_thumb = document.createElement("img");
                     new_thumb.className += "thumbnail";
                     new_thumb.setAttribute("src", photoObj.thumbnailUrl);
+                    
+                    var num_photos = document.createElement("div");
+                    num_photos.className += "num_photo";
+                    num_photos.textContent = data.length + " photos";
                     /*
                 var a_album = document.createElement("a");
                 var a_title = document.createElement("a");
@@ -171,6 +179,7 @@
                     a_photo.href = "album_single.html?id=" + albumObj.id;
 
                     new_tab_photo.appendChild(new_thumb);
+                    new_tab_photo.appendChild(num_photos);
                     a_photo.appendChild(new_tab_photo);
                     /*
                 a_title.textContent = photoObj.title;
@@ -192,32 +201,32 @@
                     $(new_tab_photo).show(500);
                 });
 
-                        }
+            }
 
-                        function getAlbums(){
-                    $.ajax({
-                        url: root + '/albums/',
-                        method: 'GET'
-                    }).then(function(albums) {
-                        for(i = albums.length - albums_cnt - 1; i > albums.length - albums_cnt - numViewAlbum - 1 && i >= 0; i--) {
-                            showAlbum(albums[i]);
-                            console.log(albums[i].id)
-                        }
-                        albums_cnt = albums_cnt + numViewAlbum;
-                        if(albums_cnt >= albums.length){
-                            $("#viewmore").hide();
-                        }
-                    });
-                }
-
-                $(document).ready(function () {
-                    console.log("console.log");
-                    getAlbums();
-                    $("#viewmore").click(function (e) {
-                        e.preventDefault();
-                        getAlbums();
-                    });
+            function getAlbums(){
+                $.ajax({
+                    url: root + '/albums/',
+                    method: 'GET'
+                }).then(function(albums) {
+                    for(i = albums.length - albums_cnt - 1; i > albums.length - albums_cnt - numViewAlbum - 1 && i >= 0; i--) {
+                        showAlbum(albums[i]);
+                        console.log(albums[i].id)
+                    }
+                    albums_cnt = albums_cnt + numViewAlbum;
+                    if(albums_cnt >= albums.length){
+                        $("#viewmore").hide();
+                    }
                 });
+            }
+
+            $(document).ready(function () {
+                console.log("console.log");
+                getAlbums();
+                $("#viewmore").click(function (e) {
+                    e.preventDefault();
+                    getAlbums();
+                });
+            });
 
 
         </script>
@@ -231,14 +240,14 @@
             </div>
             <div id="hright">
                 <a class="hlink" href="index.html">Home</a> 
-                <a class="hlink" href="albums.html">Albums</a>
+                <a class="hlink" href="albums.html">Photos</a>
             </div>
         </div>
         <!--Tabs-->
         <div id="bodypanel">
             <ul class="tab" id="tab">
-                <li class="al"><a href="albums.html">Albums</a></li>
-                <li class="ph"><a href="photos.html">Photos</a></li>
+                <a href="albums.html"><li class="al">Albums</li></a>
+                <a href="photos.html"><li class="ph">Photos</li></a>
             </ul>
             <div class="tab_con" id="tab_con">
 
