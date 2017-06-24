@@ -7,6 +7,7 @@
         <style type="text/css">
             @import url('https://fonts.googleapis.com/css?family=Open+Sans');
             @import url('https://fonts.googleapis.com/css?family=Oswald');
+
             .tab_photo {
                 display:inline-block;
                 background-color: whitesmoke;
@@ -56,7 +57,6 @@
             }
 
             /* CSS for tabs */
-
             ul, li {
                 list-style: none;
             }
@@ -86,7 +86,7 @@
                 cursor: pointer;
             }
 
-            .tab li.ph {
+            .tab li.al {
                 background-color: #eee;
                 color: #f00;
             }
@@ -106,15 +106,17 @@
                 background: #fff;
             }
 
-
         </style>
         <script>
             var root = 'https://jsonplaceholder.typicode.com';
             var allphotos = [];
             var photos_cnt = 0;
-            var numViewPhoto = 15;
+            var albums_cnt = 0;
+            var numViewAlbum = 5;
 
-            function showPhoto(photoObj) {
+
+            function showAlbum(albumObj) {
+
                 var new_tab_photo = document.createElement("div");
                 new_tab_photo.className += "tab_photo";
 
@@ -179,29 +181,31 @@
                 $(new_tab_photo).show(500);
             }
 
-            function getPhotos(){
+            function getAlbums(){
                 $.ajax({
-                    url: root + '/photos/'
-                    , method: 'GET'
-                }).then(function (photos) {
-                    for (i = photos.length - photos_cnt - 1; i > photos.length - photos_cnt - numViewPhoto - 1 && i >= 0; i--) {
-                        showPhoto(photos[i]);
-                        console.log(photos[i].id);
+                    url: root + '/albums/',
+                    method: 'GET'
+                }).then(function(albums) {
+                    for(i = albums.length - albums_cnt - 1; i > albums.length - albums_cnt - numViewAlbum - 1 && i >= 0; i--) {
+                        showAlbum(albums[i]);
+                        console.log(albums[i].id)
                     }
-                    photos_cnt = photos_cnt + numViewPhoto;
-                    if (photos_cnt >= photos.length) {
+                    albums_cnt = albums_cnt + numViewAlbum;
+                    if(albums_cnt >= data.length){
                         $("#viewmore").hide();
                     }
                 });
             }
 
             $(document).ready(function () {
-                getPhotos();
+                console.log("console.log");
+                getAlbums();
                 $("#viewmore").click(function (e) {
                     e.preventDefault();
-                    getPhotos();
+                    getAlbums();
                 });
             });
+
 
         </script>
         <title></title>
@@ -218,14 +222,13 @@
             </div>
         </div>
         <!--Tabs-->
-
-
         <div id="bodypanel">
             <ul class="tab" id="tab">
                 <li class="al"><a href="albums.html">Albums</a></li>
                 <li class="ph"><a href="photos.html">Photos</a></li>
             </ul>
             <div class="tab_con" id="tab_con">
+
             </div>
         </div>
         <div id="footer">

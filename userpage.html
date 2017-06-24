@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="jquery-3.2.1.min.js"></script>
+        <link rel = "stylesheet" href = "stylesheet.css">
+        <script>
+            var root = 'https://jsonplaceholder.typicode.com';
+            var allPosts = [];
+            var posts_cnt = 0;
+
+            function getUser(obj) {
+                console.log(obj);
+                $("#usermainname").text(obj.name);
+
+                $("#userusername").text(obj.username);
+                var new_email = document.createElement("span");
+                var new_number = document.createElement("span");
+                var new_website = document.createElement("span");
+
+                new_email.textContent = (obj.email);
+                new_number.textContent = (obj.phone);
+                new_website.textContent = (obj.website);
+
+                var userdata = document.getElementsByClassName('userdata');
+                userdata[0].appendChild(new_email);
+                userdata[1].appendChild(new_number);
+                userdata[2].appendChild(new_website);
+            }
+
+            function getPost(obj) {
+                var new_post_container = document.createElement("div");
+                new_post_container.className += "postcontainer";
+                var new_post_title = document.createElement("div");
+                new_post_title.className += "posttitle";
+                var new_post_author = document.createElement("div");
+                new_post_author.className += "postauthor";
+                var new_post_content = document.createElement("div");
+                new_post_content.className += "postcontent";
+
+                var a_title = document.createElement("a");
+                var a_author = document.createElement("a");
+                var a_post = document.createElement("a");
+
+                var authorName;
+                a_title.href = "http://www.google.com"
+                $.ajax({
+                    url: root + '/users/' + obj.userId,
+                    method: 'GET'
+                }).then(function(data) {
+                    console.log(data.name);
+                    authorName = data.name;
+                    a_author.textContent = data.username;
+                });
+
+                a_title.textContent = obj.title;
+                a_post.textContent = obj.body;
+
+                new_post_title.appendChild(a_title);
+                new_post_author.appendChild(a_author);
+                new_post_content.appendChild(a_post);
+
+                new_post_container.appendChild(new_post_title);
+                new_post_container.appendChild(new_post_author);
+                new_post_container.appendChild(new_post_content);
+
+                $("#usercontent").append(new_post_container);
+                $(new_post_container).show(500);
+            }
+
+
+            $(document).ready(function(){
+                console.log("console.log");
+                var id = window.location.search.split("=");
+
+                $.ajax({
+                    url: root + '/users/' + id[1],
+                    method: 'GET'
+                }).then(function(data) {
+                    getUser(data);
+                    console.log(data);
+                });
+
+                $.ajax({
+                    url: root + '/posts?userId=' +  + id[1],
+                    method: 'GET'
+                }).then(function(data) {
+                    for(i = data.length - posts_cnt - 1; i > data.length - posts_cnt - 11; i--) {
+                        getPost(data[i]);
+                        console.log(data[i].id)
+                    }
+                    posts_cnt = posts_cnt + 10;
+                });
+
+                /*
+                $("#viewmore").click(function(e){
+                    e.preventDefault();
+                    $.ajax({
+                        url: root + '/posts/',
+                        method: 'GET'
+                    }).then(function(data) {
+                        for(i = data.length - posts_cnt - 1; i > data.length - posts_cnt - 11; i--) {
+                            getPost(data[i]);
+                            console.log(data[i].id)
+                        }
+                        posts_cnt = posts_cnt + 10;
+                        if(posts_cnt == data.length){
+                            $("#viewmore").hide();
+                        }
+
+                    });
+                });*/
+            });
+
+        </script>
+    </head>
+
+    <body>
+        <div id="header">
+            <div id="hleft">
+                <a id="hlogo" href="index.html">OINKLOGO</a>
+            </div>
+            <div id="hright">
+                <a class="hlink" href="index.html">Home</a> 
+                <a class="hlink" href="albums.html">Albums</a>
+            </div>
+        </div>
+        <div id="bodypanel">
+            <div id="usermaindiv">
+                <div id="usermainname">
+
+                </div>
+                <div id="userusername">
+
+                </div>
+                <div id="userinformation">
+                    <div class="userdata"><i class="fa fa-envelope-o"></i></div>
+                    <div class="userdata"><i class="fa fa-phone"></i></div>
+                    <div class="userdata"><i class="fa fa-globe"></i></div>
+                </div>
+            </div>
+            <div id="usercontentnav">
+                <ul>
+                    <li><a href="#post">Posts</a></li>
+                    <li><a href="#albums">Albums</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+
+            <div id="usercontent">
+
+            </div>
+            <!--
+<div id="usermaindiv">
+<div id="usermainname">
+Coco Cola
+</div>
+<div id="userusername">
+Cupp.Keyk
+</div>
+<div id="userinformation">
+<div class="userdata"><i class="fa fa-envelope-o"></i><span>allyza.acuna@gmail.com</span></div>
+<div class="userdata"><i class="fa fa-phone"></i><span>1-770-736-8031 x56442</span></div>
+<div class="userdata"><i class="fa fa-globe"></i><span>hildegard.org</span></div>
+</div>
+</div>
+<div id="usercontentnav">
+<ul>
+<li><a href="#post">Posts</a></li>
+<li><a href="#albums">Albums</a></li>
+<li><a href="#about">About</a></li>
+</ul>
+</div>
+
+<div id="usercontent">
+<div class="postcontainer">
+<div class="posttitle"><a href="index.html">'CCS 404 Sleep Not Found' bombs box office with $3M opening on a $250M budget</a></div>
+<div class="postauthor"><a href="index.html">Adam Sandler</a></div>
+<div class="postcontent">qui consequuntur ducimus possimus quisquam amet similique\nsuscipit porro ipsam amet\neos veritatis officiis exercitationem vel fugit aut necessitatibus totam\nomnis rerum consequatur expedita quidem cumque explicabo</div>
+</div>
+
+<div class="postcontainer">
+<div class="posttitle"><a href="index.html">'CCS 404 Sleep Not Found' bombs box office with $3M opening on a $250M budget</a></div>
+<div class="postauthor"><a href="index.html">Adam Sandler</a></div>
+<div class="postcontent">qui consequuntur ducimus possimus quisquam amet similique\nsuscipit porro ipsam amet\neos veritatis officiis exercitationem vel fugit aut necessitatibus totam\nomnis rerum consequatur expedita quidem cumque explicabo</div>
+</div>
+
+<div class="postcontainer">
+<div class="posttitle"><a href="index.html">'CCS 404 Sleep Not Found' bombs box office with $3M opening on a $250M budget</a></div>
+<div class="postauthor"><a href="index.html">Adam Sandler</a></div>
+<div class="postcontent">qui consequuntur ducimus possimus quisquam amet similique\nsuscipit porro ipsam amet\neos veritatis officiis exercitationem vel fugit aut necessitatibus totam\nomnis rerum consequatur expedita quidem cumque explicabo</div>
+</div>
+
+</div>
+-->
+        </div>
+
+    </body>
+</html>

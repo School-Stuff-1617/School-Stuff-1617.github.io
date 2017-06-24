@@ -1,59 +1,11 @@
 <html>
     <head>
-        <script src="jquery-3.2.1.js"></script>
-        <script src="script.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="jquery-3.2.1.min.js"></script>
+        <link rel = "stylesheet" href = "stylesheet.css">
         <style type="text/css">
             @import url('https://fonts.googleapis.com/css?family=Open+Sans');
             @import url('https://fonts.googleapis.com/css?family=Oswald');
-
-            body {
-                background-color:darkviolet;
-                margin: 0;
-                font-family: sans-serif;
-            }
-            #header {
-                display: inline-block;
-                height: 70px;
-                width: 100%;
-                /*background-color: aqua;*/
-                background-color:darkviolet;
-                line-height: 70px;
-                position: fixed;
-            }
-            #hright {
-                display: inline-block;
-                margin-left: 20px;
-                float: right;
-                margin-right: 10%;
-                white-space: nowrap;
-            }
-            #hleft {
-                display: inline-block;
-                margin-left: 10%;
-            }
-            .hlink {
-                margin-left: 20px;
-                color: white;
-                white-space: nowrap;
-                font-size: 1em;
-            }
-            #hlogo {
-                color: white;
-                white-space: nowrap;
-                font-size: 1em;
-            }
-            a {
-                text-decoration: none;
-                color: black;
-            }
-            a:visited {
-                color: white;
-            }
-            #bodypanel {
-                text-align: center;
-                /*margin-top: 70px;*/
-                padding-top: 70px;
-            }
             .postcontainer {
                 background-color: whitesmoke;
                 padding: 30px;
@@ -106,7 +58,7 @@
             var posts_cnt = 0;
             var numViewPost = 10;
 
-            function showPost(obj) {
+            function showPost(postObj) {
                 var new_post_container = document.createElement("div");
                 new_post_container.className += "postcontainer";
                 var new_post_title = document.createElement("div");
@@ -123,17 +75,17 @@
                 var authorName;
                 var authorId;
                 $.ajax({
-                    url: root + '/users/' + obj.userId,
+                    url: root + '/users/' + postObj.userId,
                     method: 'GET'
                 }).then(function(data) {
                     authorName = data.name;
                     a_author.textContent = data.username;
                 });
 
-                a_title.textContent = obj.title;
-                a_post.textContent = obj.body;
-                a_author.href = "user.html?id=" + obj.userId;
-                
+                a_title.textContent = postObj.title;
+                a_post.textContent = postObj.body;
+                a_author.href = "userpage.html?id=" + postObj.userId;
+
                 new_post_title.appendChild(a_title);
                 new_post_author.appendChild(a_author);
                 new_post_content.appendChild(a_post);
@@ -150,10 +102,10 @@
                 $.ajax({
                     url: root + '/posts/',
                     method: 'GET'
-                }).then(function(data) {
-                    for(i = data.length - posts_cnt - 1; i > data.length - posts_cnt - numViewPost - 1 && i >= 0; i--) {
-                        showPost(data[i]);
-                        console.log(data[i].id)
+                }).then(function(posts) {
+                    for(i = posts.length - posts_cnt - 1; i > posts.length - posts_cnt - numViewPost - 1 && i >= 0; i--) {
+                        showPost(posts[i]);
+                        console.log(posts[i].id)
                     }
                     posts_cnt = posts_cnt + numViewPost;
                     if(posts_cnt >= data.length){
@@ -177,11 +129,11 @@
     <body>
         <div id="header">
             <div id="hleft">
-                <a id="hlogo" href="home.html">OINKLOGO</a>
+                <a id="hlogo" href="index.html">OINKLOGO</a>
             </div>
             <div id="hright">
-                <a class="hlink" href="home.html">Home</a> 
-                <a class="hlink" href="user.html">Albums</a>
+                <a class="hlink" href="index.html">Home</a> 
+                <a class="hlink" href="albums.html">Albums</a>
             </div>
         </div>
 
