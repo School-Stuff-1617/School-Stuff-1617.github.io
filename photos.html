@@ -178,7 +178,6 @@
                 to {transform:scale(1)}
             }
 
-            /* The Close Button */
             .close {
                 position: absolute;
                 top: 15px;
@@ -311,6 +310,7 @@
                             a_album.href = "album_single.html?id=" + photos.albumId;
                             a_album.textContent = "View more: " + album.title;
                             modal_album.appendChild(a_album);
+                            
                             // get the photo uploader username
                             $.ajax({
                                 url: root + '/users/' + album.userId
