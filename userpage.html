@@ -37,20 +37,30 @@
                 font-family: 'Open Sans', sans-serif;
                 color: cornflowerblue;
             }
-            
+
             .num_photo{
                 padding-top: 8px;
                 font-size: 12;
                 color: darkslategrey;
+            }
+            .viewmore{
+                text-align: center;
+                margin-bottom: 5%;
+                color: white;
+                display: inline-block;
+                font-size: 1em;
+            }
+            .viewmore:hover{
+                cursor: pointer;
             }
         </style>
         <script>
             var root = 'https://jsonplaceholder.typicode.com';
             var allPosts = [];
             var posts_cnt = 0;
-            var numViewPost = 100;
+            var numViewPost = 10;
             var albums_cnt = 0;
-            var numViewAlbum = 100;
+            var numViewAlbum = 9;
 
             // This function adds the user information in the first banner of the page
             function getUser(obj) {
@@ -251,6 +261,7 @@
 
             // This function gets 10 posts via ajax and calls getPost() to add it into the page
             function loadPosts(id) {
+
                 $.ajax({
                     url: root + '/posts?userId=' +  + id[1],
                     method: 'GET'
@@ -261,12 +272,13 @@
                     }
                     posts_cnt = posts_cnt + numViewPost;
                     if(posts_cnt >= posts.length){
-                        $("#viewmore").hide();
+                        $(".viewmore").hide();
                     }
                 });
             }
 
             function loadAlbums(id) {
+
                 $.ajax({
                     url: root + '/albums?userId=' +  + id[1],
                     method: 'GET'
@@ -277,7 +289,7 @@
                     }
                     albums_cnt = albums_cnt + numViewAlbum;
                     if(albums_cnt >= albums.length){
-                        $("#viewmore").hide();
+                        $(".viewmore").hide();
                     }
                 });
             }
@@ -293,6 +305,12 @@
                     getUser(data[0]);
                     console.log(data);
                 });
+                console.log("load posts");
+                var viewmore = document.createElement("div");
+                viewmore.className += "viewmore";
+                viewmore.textContent = "View More...";
+
+                $("#footer").append(viewmore);
                 console.log(id[1]);
                 loadPosts(id);
 
@@ -300,14 +318,26 @@
                 $(window).on('hashchange',function(){
                     console.log(window.location.hash.slice(1));
                     $("#usercontent").empty();
+                    $("#footer").empty();
+
                     posts_cnt = 0;
 
                     if(window.location.hash.slice(1) == "posts") {
                         console.log("load posts");
+                        var viewmore = document.createElement("div");
+                        viewmore.className += "viewmore";
+                        viewmore.textContent = "View More...";
+
+                        $("#footer").append(viewmore);
                         loadPosts(id);
                     }
                     else if(window.location.hash.slice(1) == "albums") {
                         console.log("load albums");
+                        var viewmore = document.createElement("div");
+                        viewmore.className += "viewmore";
+                        viewmore.textContent = "View More...";
+
+                        $("#footer").append(viewmore);
                         loadAlbums(id);
                     }
                     else if(window.location.hash.slice(1) == "about") {
@@ -316,24 +346,18 @@
                     }
                 });
 
-                /*
-                $("#viewmore").click(function(e){
-                    e.preventDefault();
-                    $.ajax({
-                        url: root + '/posts/',
-                        method: 'GET'
-                    }).then(function(data) {
-                        for(i = data.length - posts_cnt - 1; i > data.length - posts_cnt - 11; i--) {
-                            getPost(data[i]);
-                            console.log(data[i].id)
-                        }
-                        posts_cnt = posts_cnt + 10;
-                        if(posts_cnt == data.length){
-                            $("#viewmore").hide();
-                        }
 
-                    });
-                });*/
+                $(".viewmore").click(function(e){
+                    e.preventDefault();
+                    if(window.location.hash.slice(1) == "posts") {
+                        console.log("load more posts");
+                        loadPosts(id);
+                    }
+                    else if(window.location.hash.slice(1) == "albums") {
+                        console.log("load more albums");
+                        loadAlbums(id);
+                    }
+                });
             });
 
         </script>
@@ -375,6 +399,7 @@
 
 
             </div>
+            <div id="footer"></div>
         </div>
 
     </body>
