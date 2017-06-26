@@ -37,172 +37,20 @@
                 font-family: 'Open Sans', sans-serif;
                 color: cornflowerblue;
             }
-
-            /* CSS for tabs */
-            ul, li {
-                list-style: none;
-            }
-
-            .tab a {
-                color: #000;
-            }
-
-            .tab {
-                border: 0px solid darkviolet;
-                border-left: none;
-                background-color: #fff;
-                overflow: hidden;
-                text-align: left;
-                margin: 0px;
-            }
-
-            .tab li {
-                float: center;
-                width: 20%;
-                border-left: 0px solid #ddd;
-                text-align: center;
-                box-sizing: border-box;
-                display: inline-block;
-                padding-top: 15px;
-                padding-bottom: 15px;
-                cursor: pointer;
-            }
-
-            .tab li.al {
-                background-color: #eee;
-                color: #f00;
-            }
-
-            .tab_con {
-                /*clear: both;*/
-                margin: 0 auto;
-                margin-top: 5px;
-                border: 0px solid #ddd;
-                width: 80%;
-                text-align: left;
-            }
-
-            #tab-album , #tab-photos  {
-                display: none;
-                height: 1000px;
-                background: #fff;
-            }
-            
-            .num_photo{
-                padding-top: 8px;
-                font-size: 12;
-                color: darkslategrey;
-            }<style type="text/css">
-            @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-            @import url('https://fonts.googleapis.com/css?family=Oswald');
-
-            .tab_photo {
-                display:inline-block;
-                background-color: whitesmoke;
-                padding: 15px;
-                margin: 15px;
-            }
-
-            .tab_album{
-                display:inline-block;
-                background-color: whitesmoke;
-                padding: 15px;
-                height: 500px;
-                width: 150px;
-                margin: 15px;
-                border-radius: 15px;
-            }
-
-            .phototitle a {
-                position: relative;
-                font-size: 12;
-                font-family: 'Oswald', sans-serif;
-                color: darkslategrey;
-            }
-
-            .photoalbum a {
-                font-size: 10;
-                font-family: 'Open Sans', sans-serif;
-                color: cornflowerblue;
-            }
-
-            #footer {
-                text-align: center;
-            }
-
-            #viewmore {
-                text-align: center;
-                margin-bottom: 5%;
-                color: white;
-                display: inline-block;
-            }
-
-            #viewmore:hover {
-                cursor: pointer;
-            }
-
-            /* CSS for tabs */
-            ul, li {
-                list-style: none;
-            }
-
-            .tab a {
-                color: #000;
-            }
-
-            .tab {
-                border: 0px solid darkviolet;
-                border-left: none;
-                background-color: #fff;
-                overflow: hidden;
-                text-align: left;
-                margin: 0px;
-            }
-
-            .tab li {
-                float: center;
-                width: 20%;
-                border-left: 0px solid #ddd;
-                text-align: center;
-                box-sizing: border-box;
-                display: inline-block;
-                padding-top: 15px;
-                padding-bottom: 15px;
-                cursor: pointer;
-            }
-
-            .tab li.al {
-                background-color: #eee;
-                color: #f00;
-            }
-
-            .tab_con {
-                /*clear: both;*/
-                margin: 0 auto;
-                margin-top: 5px;
-                border: 0px solid #ddd;
-                width: 80%;
-                text-align: left;
-            }
-
-            #tab-album , #tab-photos  {
-                display: none;
-                height: 1000px;
-                background: #fff;
-            }
             
             .num_photo{
                 padding-top: 8px;
                 font-size: 12;
                 color: darkslategrey;
             }
+        </style>
         <script>
             var root = 'https://jsonplaceholder.typicode.com';
             var allPosts = [];
             var posts_cnt = 0;
-            var numViewPost = 10;
+            var numViewPost = 100;
             var albums_cnt = 0;
-            var numViewAlbum = 9;
+            var numViewAlbum = 100;
 
             // This function adds the user information in the first banner of the page
             function getUser(obj) {
@@ -394,7 +242,7 @@
                     new_photo_container.appendChild(new_photo_title);
                     new_photo_container.appendChild(new_photo_album);
 
-                    $("#tab_con").append(a_photo);
+                    $("#usercontent").append(a_photo);
 
                     $(new_tab_photo).show(500);
                 });
