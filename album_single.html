@@ -291,7 +291,6 @@
                     });
                 });
 
-
                 $("#album_info_container").append(album_title);
                 $("#album_info_container").append(album_user);
 
@@ -310,11 +309,57 @@
                 });
             }
 
+            function getPhotosWoInfo(){
+                var id = window.location.search.split("=");
+
+                //create album title
+                var album_title = document.createElement("div");
+                album_title.className += "album_title";
+
+                var album_user = document.createElement("div");
+                var a_user = document.createElement("a");
+                album_user.className += "album_user";
+
+                var userid;
+                $.ajax({
+                    url: root + '/albums?id=' + id[1]
+                    , method: 'GET'
+                }).then(function (album) {
+                    $.ajax({
+                        url: root + '/users?id=' + album[0].userId,
+                        method: 'GET'
+                    }).then(function(data) {
+                        console.log(data);
+                        a_user.href = "userpage.html?id=" + data[0].id + "#posts";
+                        album_user.appendChild(a_user);
+                        //console.log(userid);
+                        //album_user.textContent = data[0].name;
+                    });
+                });
+
+                $("#album_info_container").append(album_title);
+                $("#album_info_container").append(album_user);
+
+                $.ajax({
+                    url: root + '/photos?albumId=' + id[1]
+                    , method: 'GET'
+                }).then(function (photos) {
+                    for (i = photos.length - photos_cnt - 1; i > photos.length - photos_cnt - numViewPhoto - 1 && i >= 0; i--) {
+                        showPhoto(photos[i]);
+                        console.log(photos[i].id);
+                    }
+                    photos_cnt = photos_cnt + numViewPhoto;
+                    if (photos_cnt >= photos.length) {
+                        $("#viewmore").hide();
+                    }
+                });
+            }
+            
             $(document).ready(function () {
                 getPhotos();
                 $("#viewmore").click(function (e) {
                     e.preventDefault();
-                    getPhotos();
+                    getPhotosWoInfo();
                 });
 
                 // show the modal on thumbnail click
