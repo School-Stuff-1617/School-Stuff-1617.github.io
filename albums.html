@@ -109,6 +109,20 @@
                 color: darkslategrey;
             }
 
+            div .tab_photo:hover {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                transition-duration:0.5s;
+                transition-property:all;
+                transition-timing-function: ease;
+            }
+
+            .thumbnail:hover {
+                opacity: 0.7;
+                transition-duration:0.5s;
+                transition-property:all;
+                transition-timing-function: ease;
+            }
+
         </style>
         <script>
             var root = 'https://jsonplaceholder.typicode.com';
@@ -245,10 +259,17 @@
         </div>
         <!--Tabs-->
         <div id="bodypanel">
+            <div id="photocontentnav">
+                <ul>
+                    <li><a href="photos.html">Photos</a></li>
+                    <li class="selected"><a href="albums.html">Albums</a></li>
+                </ul>
+            </div>
+            <!--
             <ul class="tab" id="tab">
                 <a href="photos.html"><li class="ph">Photos</li></a>
                 <a href="albums.html"><li class="al">Albums</li></a>
-            </ul>
+            </ul>-->
             <div class="tab_con" id="tab_con">
 
             </div>
