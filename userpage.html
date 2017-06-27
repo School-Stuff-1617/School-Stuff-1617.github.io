@@ -43,7 +43,26 @@
                 font-size: 12;
                 color: darkslategrey;
             }
+
+            #map {
+                width: 100%;
+                height: 300px;
+                background-color: grey;
+            }
+
+            #mapcontainer{
+                text-align: center;
+            }
+            #showmap{
+                color: red;
+            }
+            #showmap:hover{
+                cursor: pointer;
+            }
         </style>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDY04qCpyFB4GqQS0FMOmPDb8xcC5jgHDw&callback=initMap"
+                async defer>
+        </script>
         <script>
             var root = 'https://jsonplaceholder.typicode.com';
             var allPosts = [];
@@ -130,7 +149,7 @@
                     company_header.textContent = "Company";
 
                     var new_hrs = []
-                    for(i = 0; i < 4; i++)
+                    for(i = 0; i < 5; i++)
                         new_hrs[i] = document.createElement("hr");
 
                     var address_data = document.createElement("div");
@@ -152,14 +171,17 @@
                     company_data.append(company_catchphrase);
                     company_data.append(company_bs);
 
+                    initMap(parseFloat(data[0].address.geo.lat), parseFloat(data[0].address.geo.lng));
+                    $("#map").hide();
                     $("#usercontent").append(address_header);
                     $("#usercontent").append(new_hrs[0]);
                     $("#usercontent").append(address_data);
                     $("#usercontent").append(new_hrs[1]);
-                    $("#usercontent").append(company_header);
-                    $("#usercontent").append(new_hrs[2]);
-                    $("#usercontent").append(company_data);
-                    $("#usercontent").append(new_hrs[3]);
+                    $("#usercontentcompany").append(new_hrs[2]);
+                    $("#usercontentcompany").append(company_header);
+                    $("#usercontentcompany").append(new_hrs[3]);
+                    $("#usercontentcompany").append(company_data);
+                    $("#usercontentcompany").append(new_hrs[4]);
                 });
 
             }
@@ -249,6 +271,18 @@
 
             }
 
+            function initMap(lati,lngi) {
+                var uluru = {lat: lati, lng: lngi};
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 4,
+                    center: uluru
+                });
+                var marker = new google.maps.Marker({
+                    position: uluru,
+                    map: map
+                });
+            }
+
             // This function gets 10 posts via ajax and calls getPost() to add it into the page
             function loadPosts(id) {
 
@@ -287,7 +321,8 @@
             $(document).ready(function(){
                 console.log("console.log");
                 var id = window.location.search.split("=");
-
+                $("#map").empty();
+                $("#mapcontainer").hide();
                 $.ajax({
                     url: root + '/users?id=' + id[1],
                     method: 'GET'
@@ -299,6 +334,7 @@
                     console.log("load posts");
                     loadPosts(id);
                     $("#viewmore").show();
+
                 }
                 else if(window.location.hash.slice(1) == "albums") {
                     console.log("load albums");
@@ -309,6 +345,8 @@
                     loadUserAbout();
                     console.log("load about");
                     $("#viewmore").hide();
+                    $("#mapcontainer").show();
+                    $("#showmap").show();
                 }
                 else{
                     console.log("load posts");
@@ -319,6 +357,9 @@
                 $(window).on('hashchange',function(){
                     console.log(window.location.hash.slice(1));
                     $("#usercontent").empty();
+                    $("#map").empty();
+                    $("#usercontentcompany").empty();
+                    $("#mapcontainer").hide();
 
                     posts_cnt = 0;
                     albums_cnt = 0;
@@ -337,6 +378,8 @@
                         loadUserAbout();
                         console.log("load about");
                         $("#viewmore").hide();
+                        $("#mapcontainer").show();
+                        $("#showmap").show();
                     }
                 });
 
@@ -354,6 +397,20 @@
                     else {
                         console.log("load more posts");
                         loadPosts(id);
+                    }
+                });
+
+                $("#showmap").click(function(){
+                    console.log($("#showmap").text());
+                    if($("#showmap").text() == "Show on Map") {
+                        $("#showmap").empty();
+                        $("#showmap").append("Hide Map")
+                        $("#map").show();
+                    }
+                    else{
+                        $("#showmap").empty();
+                        $("#showmap").append("Show on Map")
+                        $("#map").hide();
                     }
                 });
             });
@@ -396,6 +453,12 @@
             <div id="usercontent">
 
 
+            </div>
+            <div id="mapcontainer">
+                <div id="showmap">Show on Map</div>
+                <div id="map"></div>
+            </div>
+            <div id="usercontentcompany">
             </div>
             <div id="footer"><div id="viewmore">
                 View More...
