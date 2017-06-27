@@ -1,6 +1,7 @@
 <html>
 
     <head>
+        <title>Photos | Oink</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="jquery-3.2.1.min.js"></script>
         <link rel = "stylesheet" href = "stylesheet.css">
@@ -311,6 +312,7 @@
                     , method: 'GET'
                 }).then(function (photos) {
                     // get the photo title
+                    document.title = photos.title + " | Photos | Oink";
                     modal_caption.innerHTML += photos.title;
                     modal_img.src = photos.url;
 
@@ -359,6 +361,7 @@
                     window.location.hash = "";
                     var modal_thing = document.getElementById("myModal");
                     modal_thing.style.display='none';
+                    document.title = "Photos | Oink";
                 });
 
                 if(window.location.hash.slice(1) != "") {
