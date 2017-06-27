@@ -1,57 +1,103 @@
 <html>
     <head>
+        <title>Home | Oink</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="jquery-3.2.1.min.js"></script>
         <link rel = "stylesheet" href = "stylesheet.css">
-        <style type="text/css">
-            @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-            @import url('https://fonts.googleapis.com/css?family=Oswald');
-            .postcontainer {
-                background-color: whitesmoke;
-                padding: 30px;
-                min-height: 100px;
-                width: 80%;
-                max-width: 800px;
-                margin: 0 auto;
-                margin-bottom: 30px;
-                border-radius: 15px;
-                text-align: left;
+        <style>
+            .modal {
+                display: none; /* Hidden by default */
+                position: fixed; /* Stay in place */
+                z-index: 1; /* Sit on top */
+                padding-top: 100px; /* Location of the box */
+                left: 0;
+                top: 0;
+                width: 100%; /* Full width */
+                height: 100%; 
+                background-color: rgb(0,0,0); /* Fallback color */
+                background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+                overflow: auto;
             }
-            .posttitle a{
-                font-weight: 500;
-                font-size: 1.5em;
-                font-family: 'Oswald', sans-serif;
-                color:darkslategrey;
-            }
-            .postauthor a{
-                font-family: 'Open Sans', sans-serif;
-                font-weight: 500;
-                color: cornflowerblue;
-            }
-            .postauthor a:hover{
+    
+            .modal a:hover {
                 text-decoration: underline;
             }
-            .postcontent a{
-                padding-top: 10px;
-                font-family: 'Open Sans', sans-serif;
+            
+            /* Modal Content (Image) */
+            .modal-content {
+                margin: auto;
+                display: block;
+                width: 80%;
+                max-width: 400px;
             }
-            .postcontent {
-                padding-top: 10px;
-            }
-            #footer{
+
+            /* Caption of Modal Image (Image Text) - Same Width as the Image */
+            #caption, #imguploader, #imgalbum {
+                margin: auto;
+                display: block;
+                width: 80%;
+                max-width: 700px;
                 text-align: center;
             }
-            #viewmore{
-                text-align: center;
-                margin-bottom: 5%;
-                color: white;
-                display: inline-block;
-                font-size: 1em;
+
+            #caption {
+                font-size: 1.5em;
+                font-family: "Oswald", sans-serif;
+                color: #ccc;
             }
-            #viewmore:hover{
+
+            #imguploader {
+                color: cornflowerblue;
+                margin-bottom: 10px;
+            }
+
+            #imgalbum {
+                color: #ccc;
+            }
+
+            /* Add Animation - Zoom in the Modal */
+            .modal-content, #caption { 
+                -webkit-animation-name: zoom;
+                -webkit-animation-duration: 0.6s;
+                animation-name: zoom;
+                animation-duration: 0.6s;
+            }
+
+            @-webkit-keyframes zoom {
+                from {-webkit-transform:scale(0)} 
+                to {-webkit-transform:scale(1)}
+            }
+
+            @keyframes zoom {
+                from {transform:scale(0)} 
+                to {transform:scale(1)}
+            }
+
+            .close {
+                position: absolute;
+                top: 15px;
+                right: 35px;
+                color: #f1f1f1;
+                font-size: 40px;
+                font-weight: bold;
+                transition: 0.3s;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: #bbb;
+                text-decoration: none;
                 cursor: pointer;
             }
+
+            /* 100% Image Width on Smaller Screens */
+            @media only screen and (max-width: 700px){
+                .modal-content {
+                    width: 100%;
+                }
+            }
         </style>
+        
         <script>
             var root = 'https://jsonplaceholder.typicode.com';
             var allPosts = [];
@@ -84,7 +130,7 @@
 
                 a_title.textContent = postObj.title;
                 a_post.textContent = postObj.body;
-                a_author.href = "userpage.html?id=" + postObj.userId;
+                a_author.href = "userpage.html?id=" + postObj.userId + "#posts";
 
                 new_post_title.appendChild(a_title);
                 new_post_author.appendChild(a_author);
@@ -107,6 +153,7 @@
                         showPost(posts[i]);
                         console.log(posts[i].id)
                     }
+                    console.log(posts);
                     posts_cnt = posts_cnt + numViewPost;
                     if(posts_cnt >= posts.length){
                         $("#viewmore").hide();
@@ -115,7 +162,7 @@
             }
 
             $(document).ready(function(){
-                //console.log("console.log");
+                console.log("console.log");
                 getPosts();
                 $("#viewmore").click(function(e){
                     e.preventDefault();
@@ -124,7 +171,7 @@
             });
 
         </script>
-        <title></title>
+        <title>Oink</title>
     </head>
     <body>
         <div id="header">
@@ -138,7 +185,15 @@
         </div>
 
         <div id="bodypanel">
+            <div id="myModal" class="modal">
 
+                    <span class="close" >&times;</span>
+                    <img class="modal-content" id="modalimg">
+                    <div id="caption"></div>
+                    <div id="imguploader"></div>
+                    <div id="imgalbum"></div>
+              </div>
+            
         </div>
 
         <div id="footer">
