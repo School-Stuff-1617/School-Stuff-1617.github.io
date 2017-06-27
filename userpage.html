@@ -169,7 +169,7 @@
                     url: root + '/photos?albumId='+albumObj.id
                     , method: 'GET'
                 }).then(function (data) {
-                    var photoObj = data[0];
+                    var photoObj = data[Math.floor((Math.random() * data.length) + 1)];
                     var a_photo = document.createElement("a");
 
                     var new_tab_photo = document.createElement("div");
@@ -295,18 +295,26 @@
                     getUser(data[0]);
                     console.log(data);
                 });
-                console.log("load posts");
-                /*
-                var viewmore = document.createElement("div");
-                viewmore.className += "viewmore";
-                viewmore.textContent = "View More...";
-
-                $("#footer").append(viewmore);
-                console.log(id[1]);
-                loadPosts(id);
-                viewmore.setAttribute("style", "display:block;");
-*/
-                loadPosts(id);
+                if(window.location.hash.slice(1) == "posts") {
+                    console.log("load posts");
+                    loadPosts(id);
+                    $("#viewmore").show();
+                }
+                else if(window.location.hash.slice(1) == "albums") {
+                    console.log("load albums");
+                    loadAlbums(id);
+                    $("#viewmore").show();
+                }
+                else if(window.location.hash.slice(1) == "about") {
+                    loadUserAbout();
+                    console.log("load about");
+                    $("#viewmore").hide();
+                }
+                else{
+                    console.log("load posts");
+                    loadPosts(id);
+                    $("#viewmore").show();
+                }
                 // Changes the contents of the usermain div depending on the hash selected
                 $(window).on('hashchange',function(){
                     console.log(window.location.hash.slice(1));
@@ -317,29 +325,11 @@
 
                     if(window.location.hash.slice(1) == "posts") {
                         console.log("load posts");
-                        /*
-                        var viewmore = document.createElement("div");
-                        viewmore.className += "viewmore";
-                        viewmore.textContent = "View More...";
-
-                        $("#footer").append(viewmore);
-                        
-                        viewmore.setAttribute("style", "display:block;");
-                        */
                         loadPosts(id);
                         $("#viewmore").show();
                     }
                     else if(window.location.hash.slice(1) == "albums") {
                         console.log("load albums");
-                        /*
-                        var viewmore = document.createElement("div");
-                        viewmore.className += "viewmore";
-                        viewmore.textContent = "View More...";
-
-                        $("#footer").append(viewmore);
-                        
-                        viewmore.setAttribute("style", "display:block;");
-                        */
                         loadAlbums(id);
                         $("#viewmore").show();
                     }
@@ -409,7 +399,7 @@
             </div>
             <div id="footer"><div id="viewmore">
                 View More...
-            </div></div>
+                </div></div>
         </div>
 
     </body>

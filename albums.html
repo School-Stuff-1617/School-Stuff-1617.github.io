@@ -123,7 +123,7 @@
                     url: root + '/photos?albumId='+albumObj.id
                     , method: 'GET'
                 }).then(function (data) {
-                    var photoObj = data[0];
+                    var photoObj = data[Math.floor((Math.random() * data.length) + 1)];
                     var a_photo = document.createElement("a");
 
                     var new_tab_photo = document.createElement("div");
