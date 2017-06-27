@@ -113,6 +113,7 @@
                     method: 'GET'
                 }).then(function(data) {
                     console.log(data.name);
+                    document.title = data.name + " | Users | Oink"
                     authorName = data.name;
                     a_author.textContent = data.username;
                 });
@@ -355,7 +356,9 @@
                 }
                 // Changes the contents of the usermain div depending on the hash selected
                 $(window).on('hashchange',function(){
+
                     console.log(window.location.hash.slice(1));
+
                     $("#usercontent").empty();
                     $("#map").empty();
                     $("#usercontentcompany").empty();
