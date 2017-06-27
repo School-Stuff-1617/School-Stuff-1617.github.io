@@ -354,6 +354,56 @@
                     }
                 });
             }
+
+            function showModal() {
+                console.log("show the modal thing");
+                //console.log($(this).data());
+
+                //get value of id from the child div (which is id div)
+                var modal_thing = document.getElementById("myModal");
+                var modal_img = document.getElementById("modalimg");
+                var modal_caption = document.getElementById("caption");
+                var modal_uploader = document.getElementById("imguploader");
+                var modal_album = document.getElementById("imgalbum");
+
+                $(modal_album).empty();
+                $(modal_uploader).empty();
+
+                var a_user = document.createElement("a");
+                var a_album = document.createElement("a");
+
+                modal_thing.style.display = "block";
+
+                // get the photo title
+                $.ajax({
+                    url: root + '/photos/' + window.location.hash.slice(1)
+                    , method: 'GET'
+                }).then(function (photos) {
+                    // get the photo title
+                    modal_caption.innerHTML += photos.title;
+                    modal_img.src = photos.url;
+
+                    // get the photo album name
+                    $.ajax({
+                        url: root + '/albums/' + photos.albumId
+                        , method: 'GET'
+                    }).then(function (album) {
+                        a_album.href = "album_single.html?id=" + photos.albumId;
+                        a_album.textContent = "View more: " + album.title;
+                        modal_album.appendChild(a_album);
+                            
+                        // get the photo uploader username
+                        $.ajax({
+                            url: root + '/users/' + album.userId
+                            , method: 'GET'
+                        }).then(function (user) {
+                            a_user.href = "userpage.html?id=" + user.id + "#posts";
+                            a_user.textContent = user.username;
+                            modal_uploader.appendChild(a_user);
+                        });
+                    }); 
+                }); 
+            }
             
             $(document).ready(function () {
                 getPhotos();
@@ -364,58 +414,24 @@
 
                 // show the modal on thumbnail click
                 $(document).on("click", ".thumbnail", function(){
-                    console.log(window.location.hash.slice(1));
-                    console.log("show the modal thing");
+                                  
+                });
 
-                    var modal_thing = document.getElementById("myModal");
-                    var modal_img = document.getElementById("modalimg");
-                    var modal_caption = document.getElementById("caption");
-                    var modal_uploader = document.getElementById("imguploader");
-                    var modal_album = document.getElementById("imgalbum");
-
-                    $(modal_album).empty();
-                    $(modal_uploader).empty();
-
-                    var a_user = document.createElement("a");
-                    var a_album = document.createElement("a");
-
-                    modal_thing.style.display = "block";
-                    modal_img.src = this.src;
-
-                    // get the photo title
-                    $.ajax({
-                        url: root + '/photos/' + window.location.hash.slice(1)
-                        , method: 'GET'
-                    }).then(function (photos) {
-                        // get the photo title
-                        modal_caption.innerHTML += photos.title;
-
-                        // get the photo album name
-                        $.ajax({
-                            url: root + '/albums/' + photos.albumId
-                            , method: 'GET'
-                        }).then(function (album) {
-                            a_album.href = "album_single.html?id=" + photos.albumId;
-                            a_album.textContent = "View more: " + album.title;
-                            modal_album.appendChild(a_album);
-                            // get the photo uploader username
-                            $.ajax({
-                                url: root + '/users/' + album.userId
-                                , method: 'GET'
-                            }).then(function (user) {
-                                a_user.href = "userpage.html?id=" + user.id + "#posts";
-                                a_user.textContent = user.username;
-                                modal_uploader.appendChild(a_user);
-                            });
-                        }); 
-                    });                    
+                $(window).on('hashchange',function(){
+                    if(window.location.hash.slice(1) != "")
+                        showModal();
                 });
 
                 $(document).on("click", ".close", function(){
                     console.log("close modal");
+                    window.location.hash = "";
                     var modal_thing = document.getElementById("myModal");
                     modal_thing.style.display='none';
                 });
+
+                if(window.location.hash.slice(1) != "") {
+                    showModal();
+                }
             });
 
         </script>
