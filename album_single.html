@@ -129,18 +129,23 @@
                 color: cornflowerblue;
             }
 
+            #myModal {
+                overflow: auto;
+            }
             .modal {
                 display: none; /* Hidden by default */
                 position: fixed; /* Stay in place */
                 z-index: 1; /* Sit on top */
-                padding-top: 100px; /* Location of the box */
+                padding-top: 50px; /* Location of the box */
                 left: 0;
                 top: 0;
                 width: 100%; /* Full width */
                 height: 100%; 
                 background-color: rgb(0,0,0); /* Fallback color */
                 background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    
             }
+    
     
             .modal a:hover {
                 text-decoration: underline;
@@ -294,6 +299,7 @@
                     url: root + '/albums?id=' + id[1]
                     , method: 'GET'
                 }).then(function (album) {
+                    document.title = album[0].title + " | Albums | Oink";
                     album_title.textContent = album[0].title;
                     //userid = album[0].userId;
                     $.ajax({
