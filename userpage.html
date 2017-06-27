@@ -43,24 +43,14 @@
                 font-size: 12;
                 color: darkslategrey;
             }
-            .viewmore{
-                text-align: center;
-                margin-bottom: 5%;
-                color: white;
-                display: inline-block;
-                font-size: 1em;
-            }
-            .viewmore:hover{
-                cursor: pointer;
-            }
         </style>
         <script>
             var root = 'https://jsonplaceholder.typicode.com';
             var allPosts = [];
             var posts_cnt = 0;
-            var numViewPost = 10;
+            var numViewPost = 5;
             var albums_cnt = 0;
-            var numViewAlbum = 9;
+            var numViewAlbum = 5;
 
             // This function adds the user information in the first banner of the page
             function getUser(obj) {
@@ -272,7 +262,7 @@
                     }
                     posts_cnt = posts_cnt + numViewPost;
                     if(posts_cnt >= posts.length){
-                        $(".viewmore").hide();
+                        $("#viewmore").hide();
                     }
                 });
             }
@@ -289,7 +279,7 @@
                     }
                     albums_cnt = albums_cnt + numViewAlbum;
                     if(albums_cnt >= albums.length){
-                        $(".viewmore").hide();
+                        $("#viewmore").hide();
                     }
                 });
             }
@@ -306,6 +296,7 @@
                     console.log(data);
                 });
                 console.log("load posts");
+                /*
                 var viewmore = document.createElement("div");
                 viewmore.className += "viewmore";
                 viewmore.textContent = "View More...";
@@ -313,41 +304,54 @@
                 $("#footer").append(viewmore);
                 console.log(id[1]);
                 loadPosts(id);
-
+                viewmore.setAttribute("style", "display:block;");
+*/
+                loadPosts(id);
                 // Changes the contents of the usermain div depending on the hash selected
                 $(window).on('hashchange',function(){
                     console.log(window.location.hash.slice(1));
                     $("#usercontent").empty();
-                    $("#footer").empty();
 
                     posts_cnt = 0;
+                    albums_cnt = 0;
 
                     if(window.location.hash.slice(1) == "posts") {
                         console.log("load posts");
+                        /*
                         var viewmore = document.createElement("div");
                         viewmore.className += "viewmore";
                         viewmore.textContent = "View More...";
 
                         $("#footer").append(viewmore);
+                        
+                        viewmore.setAttribute("style", "display:block;");
+                        */
                         loadPosts(id);
+                        $("#viewmore").show();
                     }
                     else if(window.location.hash.slice(1) == "albums") {
                         console.log("load albums");
+                        /*
                         var viewmore = document.createElement("div");
                         viewmore.className += "viewmore";
                         viewmore.textContent = "View More...";
 
                         $("#footer").append(viewmore);
+                        
+                        viewmore.setAttribute("style", "display:block;");
+                        */
                         loadAlbums(id);
+                        $("#viewmore").show();
                     }
                     else if(window.location.hash.slice(1) == "about") {
                         loadUserAbout();
                         console.log("load about");
+                        $("#viewmore").hide();
                     }
                 });
 
 
-                $(".viewmore").click(function(e){
+                $("#viewmore").click(function(e){
                     e.preventDefault();
                     if(window.location.hash.slice(1) == "posts") {
                         console.log("load more posts");
@@ -399,7 +403,9 @@
 
 
             </div>
-            <div id="footer"></div>
+            <div id="footer"><div id="viewmore">
+                View More...
+            </div></div>
         </div>
 
     </body>
