@@ -43,12 +43,11 @@ body {
 #hlogo {
     color: white;
     white-space: nowrap;
+    font-family: 'Oswald', sans-serif;
 }
 a {
     text-decoration: none;
-}
-a:visited {
-    color: white;
+    color: inherit;
 }
 #bodypanel {
     text-align: center;
@@ -62,7 +61,8 @@ a:visited {
     width: 80%;
     max-width: 800px;
     margin: 0 auto;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
+    margin-top: 15px;
     border-radius: 15px;
     text-align: left;
 }
@@ -123,7 +123,7 @@ a:visited {
     font-size: 2.5em;
     color: white;
     text-align: center;
-
+    font-weight: 700;
     line-height: 40px;
     padding-top: 80px;
     height:100%;
@@ -185,37 +185,108 @@ a:visited {
     margin-top: 30px;
 }
 
-#usercontentnav {
+#usercontentnav, #photocontentnav {
     background-color: #431A59;
     margin: 0 auto;
     line-height: 50px;
     margin-bottom: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-#usercontentnav ul {
+#usercontentnav ul, #photocontentnav ul {
     margin: 0 auto;
     display: inline;
     list-style-type: none;
     padding: 0;
 }
 
-#usercontentnav li, #usercontentnav li a:visited {
+#usercontentnav li, #photocontentnav li{
     font-family: 'Oswald', sans-serif;
     margin: 0 auto;
     display: inline;
     list-style-type: none;
-    padding: 14px;
-    padding-left: 20px;
-    padding-right: 20px;
+}
+
+#usercontentnav a, #photocontentnav a {
     color: #E1E1E1;
 }
 
-#usercontentnav li:hover{
-    
-    cursor: pointer;
+#usercontentnav a:visited, #photocontentnav a:visited {
+    color: #E1E1E1;
+}
+
+#usercontentnav .selected a , #photocontentnav .selected a {
+    color: cornflowerblue;
+}
+
+#usercontentnav li a:hover, #photocontentnav li a:hover {
     border-bottom: solid cornflowerblue;
 }
 
-#usercontentnav li a:hover{
+.selected li {
     color: cornflowerblue;
 }
+
+#usercontentnav li a, #photocontentnav li a  {
+    padding: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+
+#usercontentnav li:hover, #photocontentnav li:hover{
+    
+    cursor: pointer;
+}
+.aboutheader {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2em;
+    font-weight: 100;
+    color:darkslategrey;
+    padding-top: 20px;
+    padding-bottom: 0px;
+}
+
+.aboutcontent {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: lighter;
+
+    text-align: center;
+
+    width: 40%;
+    max-width: 400px;
+    height:100%;
+    vertical-align:middle;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+hr {
+    width: 40%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.aboutcontent h3, h4, h5 {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h3 {
+    font-weight: 400;
+    margin: 0;
+}
+h4 {
+    font-weight: 200;
+    margin: 0;
+    font-size: 0.8em;
+    color: cornflowerblue;
+}
+h5 {
+    margin: 0;
+    font-weight: 100;
+    color: gray;
+}
+
